@@ -1,6 +1,5 @@
 package org.notenoughupdates.detektrules
 
-import net.minecraftforge.common.MinecraftForge
 import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.cli.jvm.config.addJvmClasspathRoot
@@ -10,7 +9,15 @@ import java.io.File
 object CoreEnvironmentUtils {
 
     fun CompilerConfiguration.loadForge() {
-        addJvmClasspathRoot(File(MinecraftForge::class.java.protectionDomain.codeSource.location.toURI()))
+        addJvmClasspathRoot(File(System.getProperty("dependency.forge")))
+    }
+
+    fun CompilerConfiguration.loadMinecraft() {
+        addJvmClasspathRoot(File(System.getProperty("dependency.minecraft")))
+    }
+
+    fun CompilerConfiguration.loadLWJLG() {
+        addJvmClasspathRoot(File(System.getProperty("dependency.lwjgl")))
     }
 
     fun recreateEnvironment(

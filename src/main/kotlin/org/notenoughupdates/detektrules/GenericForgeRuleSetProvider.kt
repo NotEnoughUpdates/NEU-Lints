@@ -12,6 +12,7 @@ class GenericForgeRuleSetProvider : RuleSetProvider {
             ruleSetId,
             listOf(
                 InvalidSubscribeEvent(config),
+                GlStateManagerWarnings(config),
             ),
         )
     }

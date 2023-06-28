@@ -14,7 +14,6 @@ dependencies {
 
     testImplementation("io.gitlab.arturbosch.detekt:detekt-test:1.23.0")
     testImplementation("io.kotest:kotest-assertions-core:5.6.2")
-    testImplementation("net.minecraftforge:forge:1.8.9-11.15.1.2318-1.8.9:universal")
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.3")
 }
 
@@ -26,6 +25,11 @@ tasks.withType<Test>().configureEach {
     useJUnitPlatform()
     systemProperty("junit.jupiter.testinstance.lifecycle.default", "per_class")
     systemProperty("compile-snippet-tests", project.hasProperty("compile-test-snippets"))
+    fun getDep(name: String) = project(":minecraft").configurations.compileClasspath.get()
+        .files { it.name == name }.filter { "natives" !in it.name && name in it.name }.single()
+    systemProperty("dependency.minecraft", getDep("minecraft-mapped"))
+    systemProperty("dependency.forge", getDep("forge-mapped"))
+    systemProperty("dependency.lwjgl", getDep("lwjgl"))
 }
 
 publishing {

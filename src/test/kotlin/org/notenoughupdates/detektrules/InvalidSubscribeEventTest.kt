@@ -4,12 +4,9 @@ import io.gitlab.arturbosch.detekt.api.Config
 import io.gitlab.arturbosch.detekt.rules.KotlinCoreEnvironmentTest
 import io.gitlab.arturbosch.detekt.test.compileAndLintWithContext
 import io.kotest.matchers.collections.shouldHaveSize
-import net.minecraftforge.common.MinecraftForge
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
-import org.jetbrains.kotlin.cli.jvm.config.addJvmClasspathRoot
 import org.junit.jupiter.api.Test
 import org.notenoughupdates.detektrules.CoreEnvironmentUtils.loadForge
-import java.io.File
 
 @KotlinCoreEnvironmentTest
 internal class InvalidSubscribeEventTest(env: KotlinCoreEnvironment) {
