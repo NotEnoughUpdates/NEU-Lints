@@ -1,10 +1,28 @@
+import java.io.ByteArrayOutputStream
+
 plugins {
     kotlin("jvm") version "1.8.22"
     `maven-publish`
 }
 
 group = "org.notenoughupdates"
-version = "1.0-SNAPSHOT"
+
+fun cmd(vararg args: String): String? {
+    val output = ByteArrayOutputStream()
+    val r = exec {
+        this.commandLine(args.toList())
+        this.isIgnoreExitValue = true
+        this.standardOutput = output
+        this.errorOutput = ByteArrayOutputStream()
+    }
+    return if (r.exitValue == 0) output.toByteArray().decodeToString().trim()
+    else null
+}
+
+val tag = cmd("git", "describe", "--tags", "HEAD")
+val hash = cmd("git", "rev-parse", "--short", "HEAD")!!
+val isSnapshot = tag == null
+version = tag ?: hash
 
 repositories {
     maven("https://maven.minecraftforge.net/")
@@ -36,6 +54,35 @@ publishing {
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
+            pom {
+                licenses {
+                    license {
+                        name.set("Apache-2.0")
+                        url.set("https://github.com/NotEnoughUpdates/NEU-Lints/blob/HEAD/LICENSE")
+                    }
+                }
+                developers {
+                    developer {
+                        name.set("Linnea Gräf")
+                    }
+                }
+                scm {
+                    url.set("https://github.com/NotEnoughUpdates/NEU-Lints")
+                }
+            }
+
+        }
+    }
+    repositories {
+        if (project.hasProperty("neulintsPassword")) {
+            maven {
+                url = uri("https://maven.notenoughupdates.org/releases")
+                name = "neulints"
+                credentials(PasswordCredentials::class)
+                authentication {
+                    create<BasicAuthentication>("basic")
+                }
+            }
         }
     }
 }
