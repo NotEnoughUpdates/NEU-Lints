@@ -55,4 +55,21 @@ internal class InvalidSubscribeEventTest(env: KotlinCoreEnvironment) {
         val findings = InvalidSubscribeEvent(Config.empty).compileAndLintWithContext(envWithForge, code)
         findings shouldHaveSize 1
     }
+
+    @Test
+    fun `does not report non event handlers`() {
+        val code = """
+            class A {
+                private fun privateFunc(str: String) {
+                }
+                private fun privateFuncNoArg() {
+                }
+                fun publicFun(str: String) {
+                }
+                fun publicFunNoArg() {}
+            }
+        """.trimIndent()
+        val findings = InvalidSubscribeEvent(Config.empty).compileAndLintWithContext(envWithForge, code)
+        findings shouldHaveSize 0
+    }
 }

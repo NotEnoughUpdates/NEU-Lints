@@ -3,7 +3,7 @@ plugins {
     `maven-publish`
 }
 
-group = "org.notenoughupdates.detektrules"
+group = "org.notenoughupdates"
 version = "1.0-SNAPSHOT"
 
 repositories {

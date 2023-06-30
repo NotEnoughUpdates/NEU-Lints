@@ -1,4 +1,4 @@
-rootProject.name = "NEU-Lints"
+rootProject.name = "detektrules"
 
 pluginManagement {
     repositories {

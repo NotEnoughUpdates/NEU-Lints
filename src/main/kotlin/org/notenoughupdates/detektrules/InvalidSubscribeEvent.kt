@@ -49,7 +49,7 @@ class InvalidSubscribeEvent(config: Config) : Rule(config) {
                 )
             )
         }
-        if (!function.isPublic) {
+        if (hasEventArg && hasSubscribeEventAnnotation && !function.isPublic) {
             report(CodeSmell(issue, Entity.atName(function), "@SubscribeEvent event handlers need to be public"))
         }
     }
